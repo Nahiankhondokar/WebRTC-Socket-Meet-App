@@ -73,7 +73,7 @@ screenShare_btn.onclick = (e) => {
     }else {
         miniScreenDisplayNone.style.display = 'none';
         s1.srcObject = webCameraStrm;
-        webCameraStrm.getVideoTracks()[0].enabled = screenShareStatus;
+        // webCameraStrm.getVideoTracks()[0].enabled = screenShareStatus;
     }
    
     // webCam_01.srcObject = screenShareStrm;
