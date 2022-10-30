@@ -1,42 +1,44 @@
 
 // get all data
-const webCam = document.getElementById('video_screen');
-const camBtn = document.getElementById('cam');
-const microphone = document.getElementById('microphone');
-const screen = document.getElementById('screen')
+const s1 = document.getElementById('s1');
+const camera_btn = document.getElementById('camera_btn');
+const microphone_btn = document.getElementById('microphone');
+const screenShare_btn = document.getElementById('screenShare')
+const s2 = document.getElementById('s2')
+const miniScreenDisplayNone = document.querySelector('#s2');
 
 // let valriables
-let webCamearStrm;
+let webCameraStrm;
+let screenShareStrm;
 
 // camera share 
-const camShare = () => {
+const cameraShare = () => {
     navigator.mediaDevices.getUserMedia({
         video: true,
         audio : false
     })
     .then((stream) => {
-        webCamearStrm = stream;
-        webCam.srcObject = stream;
-        webCam.play();
+        webCameraStrm = stream;
+        s1.srcObject = stream;
     });
 }
-camShare();
+cameraShare();
 
 // camera share button
-let camstatus = true;
-camBtn.onclick = (e) => {
-    camstatus = !camstatus;
-    webCamearStrm.getVideoTracks()[0].enabled = camstatus;
+let cameraStatus = true;
+camera_btn.onclick = (e) => {
+    cameraStatus = !cameraStatus;
+    webCameraStrm.getVideoTracks()[0].enabled = cameraStatus;
     // alert()
-    camBtn.classList.toggle('active');
+    camera_btn.classList.toggle('active');
 }
 
 
 // microphone OFF ON button
 let microphoneStatus = true;
-microphone.onclick = (e) => {
+microphone_btn.onclick = (e) => {
     microphoneStatus = !microphoneStatus;
-    webCamearStrm.getAudioTracks()[0].enabled = microphoneStatus;
+    webCameraStrm.getAudioTracks()[0].enabled = microphoneStatus;
     // alert()
     microphone.classList.toggle('active');
 }
@@ -46,23 +48,38 @@ microphone.onclick = (e) => {
 
 
 // screen share
-// const screenShare = (video = false, audio = false) => {
-//     navigator.mediaDevices.getDisplayMedia({ video: video, audio : audio})
-//     .then((stream) => {
-//         webCam.srcObject = stream;
-//         webCam.play();
-//     })
-//     .catch((err) => {
+const screenShare = () => {
+    navigator.mediaDevices.getDisplayMedia({ 
+        video: true, 
+        audio : false
+    })
+    .then((stream) => {
+        s1.srcObject = stream;
+        s2.srcObject = webCameraStrm;
+        screenShareStrm = stream;
+    });
+}
 
-//     });
-// }
 
+// screen share button
+let screenShareStatus = false;
+screenShare_btn.onclick = (e) => {
+    screenShareStatus = !screenShareStatus;
 
+    if(screenShareStatus){
+        screenShare();
+        miniScreenDisplayNone.style.display = 'block';
+        s2.srcObject = webCameraStrm;
+    }else {
+        miniScreenDisplayNone.style.display = 'none';
+        s1.srcObject = webCameraStrm;
+        webCameraStrm.getVideoTracks()[0].enabled = screenShareStatus;
+    }
+   
+    // webCam_01.srcObject = screenShareStrm;
+    
+    screenShare_btn.classList.toggle('active');
+}
 
-
-// // screen share button
-// screen.onclick = (e) => {
-//     screenShare(true);
-// }
 
 
