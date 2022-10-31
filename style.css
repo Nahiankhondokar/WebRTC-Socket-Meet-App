@@ -14,8 +14,20 @@ h1 {
   height: 100vh;
   display: flex;
   justify-content: center;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  gap: 10px;
+}
+
+.call-manage {
+  width: 200px;
+  height: 350px;
+  background-color: #e9e9e9;
+  padding: 20px;
+  border-radius: 7px;
+}
+textarea {
+  width: 100%;
 }
 
 #screen-01 {

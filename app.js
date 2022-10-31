@@ -10,9 +10,25 @@ const miniScreenDisplayNone = document.querySelector('#s2');
 // let valriables
 let webCameraStrm;
 let screenShareStrm;
+let peerConnection;
+
+
+// peer configaration
+let servers = {
+    iceServers : [
+        {
+            "urls" : [
+                "stun1.l.google.com:19302",
+                "stun2.l.google.com:19302"
+            ]
+        }
+    ]
+}
+
+
 
 // camera share 
-const cameraShare = () => {
+const localStreamInit = () => {
     navigator.mediaDevices.getUserMedia({
         video: true,
         audio : false
@@ -22,7 +38,19 @@ const cameraShare = () => {
         s1.srcObject = stream;
     });
 }
-cameraShare();
+localStreamInit();
+
+
+// create offer
+const createOffer = async () => {
+    // peer connection
+    peerConnection = new RTCPeerConnection(servers);
+    let offer = await peerConnection.createOffer();
+
+
+    console.log(offer);
+}
+createOffer();
 
 // camera share button
 let cameraStatus = true;
@@ -47,39 +75,42 @@ microphone_btn.onclick = (e) => {
 
 
 
-// screen share
-const screenShare = () => {
-    navigator.mediaDevices.getDisplayMedia({ 
-        video: true, 
-        audio : false
-    })
-    .then((stream) => {
-        s1.srcObject = stream;
-        s2.srcObject = webCameraStrm;
-        screenShareStrm = stream;
-    });
-}
 
 
-// screen share button
-let screenShareStatus = false;
-screenShare_btn.onclick = (e) => {
-    screenShareStatus = !screenShareStatus;
 
-    if(screenShareStatus){
-        screenShare();
-        miniScreenDisplayNone.style.display = 'block';
-        s2.srcObject = webCameraStrm;
-    }else {
-        miniScreenDisplayNone.style.display = 'none';
-        s1.srcObject = webCameraStrm;
-        // webCameraStrm.getVideoTracks()[0].enabled = screenShareStatus;
-    }
+// // screen share
+// const screenShare = () => {
+//     navigator.mediaDevices.getDisplayMedia({ 
+//         video: true, 
+//         audio : false
+//     })
+//     .then((stream) => {
+//         s1.srcObject = stream;
+//         s2.srcObject = webCameraStrm;
+//         screenShareStrm = stream;
+//     });
+// }
+
+
+// // screen share button
+// let screenShareStatus = false;
+// screenShare_btn.onclick = (e) => {
+//     screenShareStatus = !screenShareStatus;
+
+//     if(screenShareStatus){
+//         screenShare();
+//         miniScreenDisplayNone.style.display = 'block';
+//         s2.srcObject = webCameraStrm;
+//     }else {
+//         miniScreenDisplayNone.style.display = 'none';
+//         s1.srcObject = webCameraStrm;
+//         // webCameraStrm.getVideoTracks()[0].enabled = screenShareStatus;
+//     }
    
-    // webCam_01.srcObject = screenShareStrm;
+//     // webCam_01.srcObject = screenShareStrm;
     
-    screenShare_btn.classList.toggle('active');
-}
+//     screenShare_btn.classList.toggle('active');
+// }
 
 
 
